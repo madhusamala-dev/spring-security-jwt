@@ -79,4 +79,9 @@ public class UserServiceImpl
                         )
                 );
     }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return repository.findByEmail(email).isPresent();
+    }
 }

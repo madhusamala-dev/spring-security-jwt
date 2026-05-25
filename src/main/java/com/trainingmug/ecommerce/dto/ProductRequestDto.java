@@ -10,5 +10,5 @@ public class ProductRequestDto {
 
     private String category;
 
-    private boolean isAvailable;
+    private boolean available;
 }

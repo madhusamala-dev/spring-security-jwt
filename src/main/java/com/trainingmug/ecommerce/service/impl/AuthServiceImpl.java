@@ -125,24 +125,18 @@ public class AuthServiceImpl
             Check Existing User
          */
 
-        try {
 
-            userService.findByEmail(
+
+           /* userService.findByEmail(
                     signupRequestDto.getEmail()
-            );
-
+            );*/
+        if(userService.existsByEmail(signupRequestDto.getEmail())) {
             throw new UserExistsException(
                     "User already exists with email : "
                             + signupRequestDto.getEmail()
             );
         }
 
-        catch (UserNotFoundException e) {
-
-            /*
-                Continue Registration
-             */
-        }
 
         /*
             DTO -> ENTITY
@@ -154,13 +148,7 @@ public class AuthServiceImpl
                         User.class
                 );
 
-        /*
-            Set Default Role
-         */
 
-        user.setRole(
-                Role.ROLE_CUSTOMER
-        );
 
         /*
             Save User

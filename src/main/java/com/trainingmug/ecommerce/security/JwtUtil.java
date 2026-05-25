@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -87,5 +88,8 @@ public class JwtUtil {
     public String retrieveEmailFromToken(String token) throws JWTVerificationException {
         log.info("Decoded JWT token: {}", getDecodedToken(token));
         return getDecodedToken(token).getSubject();
+    }
+    public List<String> retrieveRolesFromToken(String token) throws JWTVerificationException {
+        return getDecodedToken(token).getClaim(ROLE_TAG).asList(String.class);
     }
 }
