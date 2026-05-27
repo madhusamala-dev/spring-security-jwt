@@ -30,9 +30,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtUtil.retrieveTokenFromRequest(request);
-        if (token == null)
-            throw new AuthenticationException("Authorization header is empty");
         try {
+            if (token == null)
+                throw new AuthenticationException("Authorization header is empty");
+
             String email = jwtUtil.retrieveEmailFromToken(token);
             List<String> roles = jwtUtil.retrieveRolesFromToken(token);
 
@@ -61,7 +62,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             log.info("Email : " + email);
             log.info("Roles : " + roles);
 
-        } catch (JWTVerificationException e) {
+        }
+        catch (AuthenticationException e) {
+            log.error("Authentication failed : {}", e.getMessage());
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write("""
+                        {
+                            "message":"Authorization header is empty"
+                        }
+                    """);
+        }
+        catch (JWTVerificationException e) {
+            log.error("Invalid JWT token : {}", e.getMessage());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
             /*
@@ -79,12 +92,15 @@ Java 15 introduced multiline string literals
                         }
                     """);
         }
-        filterChain.doFilter(request, response);
-    }
 
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-        String path = request.getServletPath();
-        return path.startsWith("/api/auth");
-    }
+        filterChain.doFilter(request,response);
+}
+
+@Override
+protected boolean shouldNotFilter(HttpServletRequest request) {
+    String path = request.getServletPath();
+    return path.startsWith("/api/auth");
+}
+
+
 }
