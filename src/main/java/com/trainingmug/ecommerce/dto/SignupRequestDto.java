@@ -17,12 +17,16 @@ public class SignupRequestDto {
     )
     String name;
     @NotBlank(message = "Email is required")
-    @Email(message = "Invalid email format")
-
+    @Pattern(
+            regexp = "^[a-zA-Z0-9]+(?:\\.[a-zA-Z0-9]+)*@[a-zA-Z0-9-]+\\.[a-zA-Z]{2,}$",
+            message = "Invalid email format. Only letters, numbers, and dots are allowed before @"
+    )
     String email;
     @NotBlank(message = "Phone is required")
-    @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be 10 digits")
-
+    @Pattern(
+            regexp = "^[6-9]\\d{9}$",
+            message = "Phone number must be 10 digits and start with 6, 7, 8, or 9"
+    )
     String phone;
     @NotBlank(message = "Password is required")
     @Size(min = 6, max = 20, message = "Password must be between 6 and 20 characters")
