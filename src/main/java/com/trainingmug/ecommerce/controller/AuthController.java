@@ -8,6 +8,7 @@ import com.trainingmug.ecommerce.exception.InvalidCredentialsException;
 import com.trainingmug.ecommerce.exception.UserExistsException;
 import com.trainingmug.ecommerce.exception.UserNotFoundException;
 import com.trainingmug.ecommerce.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,7 +57,7 @@ public class AuthController {
     @PostMapping("/signup")
 
     public ResponseEntity<UserResponseDto>
-    signup(
+    signup(@Valid
 
             @RequestBody
             SignupRequestDto signupRequestDto

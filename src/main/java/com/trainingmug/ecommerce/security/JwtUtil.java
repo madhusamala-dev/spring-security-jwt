@@ -75,6 +75,7 @@ public class JwtUtil {
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             //Bearer token
+            //Bearer asdfasrqwerqwefasdfawetWETQWETqwet
             return authorizationHeader.substring(7);
         }
         return null;

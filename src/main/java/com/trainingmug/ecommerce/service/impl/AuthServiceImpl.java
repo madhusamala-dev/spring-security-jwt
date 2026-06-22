@@ -13,6 +13,7 @@ import com.trainingmug.ecommerce.security.JwtUtil;
 import com.trainingmug.ecommerce.service.AuthService;
 import com.trainingmug.ecommerce.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 @Service
 
 @RequiredArgsConstructor
+@Slf4j
 public class AuthServiceImpl
         implements AuthService {
 
@@ -55,16 +57,10 @@ public class AuthServiceImpl
         /*
             Validate Password
          */
-
-        boolean isValidPassword =
-                passwordEncoder.matches(
-
-                        loginRequestDto.getPassword(),
-
-                        user.getPassword()
-                );
-
-        if(!isValidPassword) {
+        log.info("{} user fetched from service {}", getClass().getName(), user);
+        log.info("{} password match : {}", getClass().getName(), passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword()));
+        log.info("{} password : {}", getClass().getName(), passwordEncoder.encode(loginRequestDto.getPassword()).equals(user.getPassword()));
+        if(!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())) {
 
             throw new InvalidCredentialsException(
                     "Invalid email or password"
@@ -147,6 +143,8 @@ public class AuthServiceImpl
                         signupRequestDto,
                         User.class
                 );
+
+        //user.setPassword(passwordEncoder.encode(user.getPassword()));
 
 
 

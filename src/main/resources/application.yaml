@@ -14,10 +14,13 @@ spring:
       hibernate:
         format_sql:
         dialect: org.hibernate.dialect.MySQLDialect
-  server:
-    port: 8080
 jwt:
   validity:
     accessToken: 86400000
     refreshToken: 2592000000
   secret: jwt-secret-code
+server:
+  port: 8080
+
+
+kind: Application
